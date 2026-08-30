@@ -1,0 +1,28 @@
+{
+  "date": "2026-08-30",
+  "runtime": "Node.js 24.19.0",
+  "scenario": {
+    "requests": 60,
+    "concurrency": 10,
+    "fastUpstreamDelayMs": 20,
+    "flakyUpstreamDelayMs": 80,
+    "flakyUpstreamFailureEvery": 3
+  },
+  "result": {
+    "failures": 0,
+    "requestsPerSecond": 221.45,
+    "latencyMs": {
+      "p50": 25.02,
+      "p95": 209.53,
+      "p99": 221.24
+    },
+    "finalEndpointState": {
+      "rpc-1": "closed",
+      "rpc-2": "open"
+    }
+  },
+  "notes": [
+    "This is a deterministic local fault-injection smoke test, not a capacity claim.",
+    "Results depend on host load and should be regenerated in CI or on the reviewer's machine."
+  ]
+}
