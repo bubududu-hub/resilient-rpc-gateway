@@ -1,0 +1,42 @@
+services:
+  rpc-fast:
+    build: .
+    command: ["node", "dist/examples/mock-upstream.js"]
+    environment:
+      MOCK_NAME: rpc-fast
+      MOCK_PORT: "9001"
+      MOCK_DELAY_MS: "20"
+
+  rpc-flaky:
+    build: .
+    command: ["node", "dist/examples/mock-upstream.js"]
+    environment:
+      MOCK_NAME: rpc-flaky
+      MOCK_PORT: "9002"
+      MOCK_DELAY_MS: "80"
+      MOCK_FAILURE_EVERY: "3"
+
+  gateway:
+    build: .
+    depends_on:
+      - rpc-fast
+      - rpc-flaky
+    environment:
+      RPC_ENDPOINTS: http://rpc-fast:9001,http://rpc-flaky:9002
+      REQUEST_TIMEOUT_MS: "500"
+      HEALTH_PROBE_INTERVAL_MS: "5000"
+      RATE_LIMIT_CAPACITY: "1000"
+      RATE_LIMIT_REFILL_PER_SECOND: "100"
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:8080/ready').then(r=>{if(!r.ok)process.exit(1)})",
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 10
