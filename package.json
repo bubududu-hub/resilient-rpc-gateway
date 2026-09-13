@@ -29,7 +29,7 @@
     "@opentelemetry/sdk-node": "^0.221.0",
     "@opentelemetry/semantic-conventions": "^1.43.0",
     "@prometheus-io/client": "^0.16.1",
-    "fastify": "^5.12.1"
+    "fastify": "^5.12.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
